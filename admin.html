@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - User Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #111827; color: white; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | User List</h1>
+        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-3 text-[#36D399]">#</th>
+                            <th class="py-3 text-[#36D399]">Full Name</th>
+                            <th class="py-3 text-[#36D399]">Phone</th>
+                            <th class="py-3 text-[#36D399]">Email</th>
+                            <th class="py-3 text-[#36D399]">Submit Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable"></tbody>
+                </table>
+            </div>
+            <button onclick="clearData()" class="mt-6 bg-red-500 text-white px-4 py-2 rounded">Clear All Data</button>
+        </div>
+    </div>
+
+<script>
+function loadData() {
+    const list = JSON.parse(localStorage.getItem("userList")) || [];
+    const table = document.getElementById("userTable");
+    table.innerHTML = "";
+    list.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-gray-800";
+        tr.innerHTML = `
+            <td class="py-3">${index+1}</td>
+            <td class="py-3">${item.name}</td>
+            <td class="py-3 font-bold text-[#36D399]">${item.phone}</td>
+            <td class="py-3">${item.email}</td>
+            <td class="py-3 text-gray-400 text-sm">${item.time}</td>
+        `;
+        table.appendChild(tr);
+    });
+}
+
+function clearData() {
+    if(confirm("Are you sure you want to clear all data?")) {
+        localStorage.removeItem("userList");
+        loadData();
+    }
+}
+
+loadData();
+</script>
+</body>
+</html>
