@@ -2,108 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJAY UPI | 3.5% Instant Cashback</title>
+    <title>AJAY UPI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: { extend: {
-                colors: { primary: '#36D399', darkBg: '#111827', darkCard: '#1F2937' }
-            }}
-        }
-    </script>
-    <style>
-        * { scroll-behavior: smooth; margin:0; padding:0; box-sizing:border-box; }
-        body { background:#111827; color:#fff; }
-        .overlay-dark { background:rgba(0,0,0,0.75); }
-        .top-marquee { position:fixed; top:0; left:0; right:0; color:white; padding:6px 0; overflow:hidden; white-space:nowrap; z-index:9999; font-size:14px; }
-        .marquee-wrap { display:inline-block; animation:marquee 25s linear infinite; }
-        .marquee-item { display:inline-block; margin-right:50px; }
-        @keyframes marquee { 0%{transform:translateX(100%)} 100%{transform:translateX(-100%)} }
-        video { object-fit:cover; }
-        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; }
-        .modal-card { background:#1F2937; border-radius:16px; padding:32px; width:90%; max-width:420px; text-align:center; }
-        .main-btn { background:#36D399; color:#000; font-weight:bold; border-radius:999px; padding:12px 24px; }
-    </style>
 </head>
-<body>
-
-<div class="top-marquee">
-    <div class="marquee-wrap">
-        <span class="marquee-item">✅ User Arjun earned ₹15,600</span>
-        <span class="marquee-item">✅ User Priya earned ₹89,200</span>
+<body class="bg-gray-900 text-white">
+    <div class="max-w-xl mx-auto p-5 mt-10">
+        <h2 class="text-green-400 text-2xl mb-4 text-center">APPLY NOW</h2>
+        <form id="cashbackForm">
+            <input class="w-full p-3 mb-3 rounded bg-gray-800" name="name" placeholder="Full Name" required>
+            <input class="w-full p-3 mb-3 rounded bg-gray-800" name="phone" placeholder="Mobile Number" required>
+            <input class="w-full p-3 mb-3 rounded bg-gray-800" name="email" placeholder="Email" required>
+            <button class="w-full bg-green-400 text-black p-3 rounded font-bold" type="submit">SUBMIT</button>
+        </form>
     </div>
-</div>
-
-<section class="relative w-full h-screen flex items-center justify-center overflow-hidden mt-[32px]">
-    <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
-        <source src="background.mp4" type="video/mp4">
-    </video>
-    <div class="absolute w-full h-full overlay-dark z-1"></div>
-    <div class="relative z-2 text-center px-6 max-w-5xl">
-        <h1 class="text-4xl font-bold text-white mb-6">
-            <span class="text-primary">3.5% INSTANT CASHBACK</span><br>AJAY UPI REWARD
-        </h1>
-        <a href="#form" class="main-btn inline-block text-xl">ACTIVATE NOW</a>
-    </div>
-</section>
-
-<section id="form" class="py-20 px-4">
-    <div class="max-w-4xl mx-auto">
-        <div class="bg-darkCard rounded-2xl p-10 border border-gray-700">
-            <h2 class="text-center text-2xl font-bold text-primary mb-6">APPLY NOW</h2>
-            <form id="cashbackForm">
-                <input name="name" placeholder="Full Name" class="w-full bg-gray-800 rounded-lg px-4 py-3 mb-3 text-white" required>
-                <input name="phone" placeholder="Mobile Number" class="w-full bg-gray-800 rounded-lg px-4 py-3 mb-3 text-white" required>
-                <input name="email" placeholder="Email" class="w-full bg-gray-800 rounded-lg px-4 py-3 mb-3 text-white" required>
-                <button type="submit" class="main-btn w-full text-lg py-3">SUBMIT</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<div class="modal-overlay" id="confirmModal">
-    <div class="modal-card">
-        <h2 class="text-xl font-bold text-primary mb-4">Join Group</h2>
-        <button onclick="confirmJoin()" class="main-btn w-full">Confirm Join</button>
-    </div>
-</div>
 
 <script>
-const telegramGroups = ["https://t.me/yourgroup1","https://t.me/yourgroup2"];
-let selectedGroup = "";
+const API_URL = "https://script.google.com/macros/s/AKfycbyWE_GtRtaSRV52-_dnOgGutSb7T9CbGnoTYE-EyqTnYVXBe0hL_Xx9gNdRI6TXvp-oeQ/exec";
 
-// 🔥 已经绑定你的 Google 表格脚本
-const API_URL = "https://script.google.com/macros/s/AKfycbzkPLUOOuIcE0vo0YOYUqsMT0UJBXlkYyz9v9VxO-TMHToAFJByDrpSCtBsZxTXC2vr8g/exec";
+document.getElementById("cashbackForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = {
+    name: e.target.name.value,
+    phone: e.target.phone.value,
+    email: e.target.email.value
+  };
 
-document.getElementById("cashbackForm").addEventListener("submit", async function(e){
-    e.preventDefault();
+  await fetch(API_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  });
 
-    const formData = {
-        name: this.name.value,
-        phone: this.phone.value,
-        email: this.email.value
-    };
-
-    try {
-        await fetch(API_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        });
-    } catch (e) {}
-
-    selectedGroup = telegramGroups[Math.floor(Math.random() * telegramGroups.length)];
-    document.getElementById("confirmModal").style.display = "flex";
-    this.reset();
+  alert("提交成功！");
+  e.target.reset();
 });
-
-function confirmJoin(){
-    window.open(selectedGroup, "_blank");
-    document.getElementById("confirmModal").style.display = "none";
-}
 </script>
 </body>
 </html>
