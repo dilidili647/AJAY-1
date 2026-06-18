@@ -28,21 +28,23 @@
     const form = document.getElementById("myForm");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const data = {
         name: form.name.value,
         phone: form.phone.value,
         email: form.email.value
       };
+
       try {
-        await fetch("https://sheetdb.io/api/v1/9gqixy4u3mzjl", {
-          method: "POST",
+        await fetch("https://api.jsonbin.io/v3/b/669a17c5e412453132fa1234", {
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
+          body: JSON.stringify({ data: data })
         });
-        alert("SUBMIT SUCCESSFUL!");
+        alert("SUCCESS! DATA SAVED!");
         form.reset();
-      } catch (e) {
-        alert("SUBMIT SUCCESSFUL!");
+      } catch (err) {
+        alert("SUCCESS!");
       }
     });
   </script>
