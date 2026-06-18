@@ -3,31 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DATA VIEW</title>
+  <title>DATA PANEL</title>
   <style>
-    body { background: #0f172a; color: white; padding: 30px; font-family: Arial; }
-    .box { max-width: 600px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 16px; }
-    h2 { color: #36d399; text-align: center; margin-bottom: 20px; }
-    .item { padding: 10px; border-bottom: 1px solid #334155; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: #fff;
+      padding: 30px 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      color: #36d399;
+      margin-bottom: 32px;
+    }
+    .item {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .item div {
+      margin: 6px 0;
+    }
+    .tip {
+      color: #94a3b8;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>USER DATA</h2>
-    <div id="result"></div>
-  </div>
+<div class="container">
+  <h2>ALL SUBMITTED LEADS</h2>
+  <div id="list"></div>
+</div>
 
-  <script>
-    async function load() {
-      const res = await fetch("https://api.jsonbin.io/v3/b/669a17c5e412453132fa1234/latest");
-      const json = await res.json();
-      const data = json.record.data;
-      document.getElementById("result").innerHTML = `
-        <div class="item">Name: ${data.name}</div>
-        <div class="item">Phone: ${data.phone}</div>
-        <div class="item">Email: ${data.email}</div>
-      `;
-    }
-    load();
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://qfmygowvhzjpgormpyf.ap-northeast-1.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YHwXVJZyaFYJfx2pW7WCEg_EX4WlVc5";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadData() {
+  const listDom = document.getElementById("list");
+  // 按提交时间倒序，最新数据在顶部
+  const { data, error } = await supabase
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    listDom.innerHTML = `<div class="item">Load failed: ${error.message}</div>`;
+    return;
+  }
+  if (data.length === 0) {
+    listDom.innerHTML = `<div class="item tip">No data yet</div>`;
+    return;
+  }
+  let html = "";
+  data.forEach((row, idx) => {
+    html += `
+    <div class="item">
+      <div>No.${idx+1}</div>
+      <div>Name: ${row.name}</div>
+      <div>Phone: ${row.phone}</div>
+      <div>Email: ${row.email}</div>
+      <div class="tip">Time: ${new Date(row.created_at).toLocaleString()}</div>
+    </div>
+    `;
+  });
+  listDom.innerHTML = html;
+}
+loadData();
+</script>
 </body>
+</html>
