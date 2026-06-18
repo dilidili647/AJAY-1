@@ -12,11 +12,11 @@
 </head>
 <body class="p-6">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | Real-Time Users</h1>
+        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | User Data</h1>
 
-        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6">
-            <button onclick="exportExcel()" class="bg-green-500 px-4 py-2 rounded mr-2">Export Excel</button>
-            <button onclick="refreshData()" class="bg-blue-500 px-4 py-2 rounded">Refresh Data</button>
+        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6 flex gap-3">
+            <button onclick="refreshData()" class="bg-blue-500 px-5 py-2 rounded">🔄 Refresh Data</button>
+            <button onclick="exportExcel()" class="bg-green-500 px-5 py-2 rounded">📊 Export Excel</button>
         </div>
 
         <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg">
@@ -36,38 +36,34 @@
     </div>
 
 <script>
-let allUsers = [];
-const API_URL = "https://api.jsonbin.io/v3/b/67f12345678901234567890a";
+let users = [];
 
+// ✅ 【刷新按钮】核心功能
 async function refreshData() {
-    try {
-        let res = await fetch(API_URL);
-        let data = await res.json();
-        allUsers = data.record || [];
-        renderTable();
-    } catch(e) {
-        alert("Error loading data");
-    }
+    let res = await fetch("https://sheetdb.io/api/v1/59q8l2xj7w0a6");
+    users = await res.json();
+    render();
 }
 
-function renderTable() {
-    const tb = document.getElementById("tableBody");
-    tb.innerHTML = "";
-    allUsers.forEach((item, i) => {
-        tb.innerHTML += `
+function render() {
+    let html = "";
+    users.forEach((u, i) => {
+        html += `
         <tr class="border-b border-gray-800">
             <td class="py-3">${i+1}</td>
-            <td class="py-3">${item.name}</td>
-            <td class="py-3 font-bold text-[#36D399]">${item.phone}</td>
-            <td class="py-3">${item.email}</td>
-            <td class="py-3 text-gray-400 text-sm">${item.time}</td>
+            <td class="py-3">${u.name}</td>
+            <td class="py-3 font-bold text-[#36D399]">${u.phone}</td>
+            <td class="py-3">${u.email}</td>
+            <td class="py-3 text-gray-400 text-sm">${u.time}</td>
         </tr>`;
     });
+    document.getElementById("tableBody").innerHTML = html;
 }
 
+// ✅ 导出 Excel
 function exportExcel() {
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(allUsers);
+    const ws = XLSX.utils.json_to_sheet(users);
     XLSX.utils.book_append_sheet(wb, ws, "Users");
     XLSX.writeFile(wb, "UserList.xlsx");
 }
