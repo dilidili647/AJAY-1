@@ -3,50 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AJAY FORM</title>
+  <title>SUBMIT INFO</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0f172a; color: white; font-family: Arial; padding: 40px 20px; }
-    .container { max-width: 450px; margin: 0 auto; background: #1e293b; padding: 40px; border-radius: 20px; }
-    h2 { text-align: center; margin-bottom: 25px; color: #36d399; }
-    input { width: 100%; padding: 14px; margin: 10px 0; background: #334155; border: none; border-radius: 10px; color: white; font-size: 16px; }
-    button { width: 100%; padding: 16px; background: #36d399; color: #000; font-weight: bold; font-size: 16px; border: none; border-radius: 10px; margin-top: 15px; cursor: pointer; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: #fff;
+      padding: 40px 20px;
+    }
+    .wrap {
+      max-width: 440px;
+      margin: 0 auto;
+      background: #1e293b;
+      padding: 36px;
+      border-radius: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #36d399;
+      margin-bottom: 28px;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      background: #334155;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 12px;
+      background: #36d399;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>SUBMIT YOUR INFO</h2>
-    <form id="myForm">
-      <input type="text" placeholder="Full Name" name="name" required>
-      <input type="text" placeholder="Mobile Number" name="phone" required>
-      <input type="email" placeholder="Email Address" name="email" required>
-      <button type="submit">SUBMIT</button>
-    </form>
-  </div>
+<div class="wrap">
+  <h2>SUBMIT YOUR INFO</h2>
+  <form id="leadForm">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <button type="submit">SUBMIT</button>
+  </form>
+</div>
 
-  <script>
-    const form = document.getElementById("myForm");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// 你的项目配置
+const SUPABASE_URL = "https://qfmygowvhzjpgormpyf.ap-northeast-1.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YHwXVJZyaFYJfx2pW7WCEg_EX4WlVc5";
 
-      const data = {
-        name: form.name.value,
-        phone: form.phone.value,
-        email: form.email.value
-      };
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const form = document.getElementById("leadForm");
 
-      try {
-        await fetch("https://api.jsonbin.io/v3/b/669a17c5e412453132fa1234", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data: data })
-        });
-        alert("SUCCESS! DATA SAVED!");
-        form.reset();
-      } catch (err) {
-        alert("SUCCESS!");
-      }
-    });
-  </script>
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = {
+    name: form.name.value.trim(),
+    phone: form.phone.value.trim(),
+    email: form.email.value.trim()
+  };
+  const { error } = await supabase.from("leads").insert([data]);
+  if (error) {
+    alert("Submit failed: " + error.message);
+  } else {
+    alert("Submit success!");
+    form.reset();
+  }
+});
+</script>
 </body>
 </html>
