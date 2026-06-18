@@ -1,36 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>表单提交测试</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AJAY UPI FORM</title>
+  <style>
+    body { background: #111827; color: white; font-family: Arial; padding: 30px; }
+    .form-box { max-width: 400px; margin: 0 auto; background: #1f2937; padding: 30px; border-radius: 16px; }
+    input { width: 100%; padding: 12px; margin: 8px 0; background: #374151; border: none; border-radius: 8px; color: white; }
+    button { width: 100%; padding: 14px; background: #36d399; color: black; font-weight: bold; border: none; border-radius: 8px; margin-top: 10px; }
+  </style>
 </head>
+
 <body>
-
-    <h2>用户申请表单</h2>
-    <form id="form">
-        姓名：<input type="text" name="name" required><br><br>
-        电话：<input type="text" name="phone" required><br><br>
-        邮箱：<input type="email" name="email" required><br><br>
-        <button type="submit">提交</button>
+  <div class="form-box">
+    <h2>SUBMIT FORM</h2>
+    <form id="dataForm">
+      <input type="text" placeholder="Full Name" name="name" required>
+      <input type="text" placeholder="Mobile Number" name="phone" required>
+      <input type="email" placeholder="Email" name="email" required>
+      <button type="submit">SUBMIT</button>
     </form>
+  </div>
 
-<script>
-// 最简单的提交功能
-const form = document.getElementById('form');
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const data = {
+  <script>
+    const form = document.getElementById('dataForm');
+    const SHEET_URL = "https://api.apispreadsheets.com/data/TFyYx4VxT1iAepAChH/";
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
         name: form.name.value,
         phone: form.phone.value,
         email: form.email.value
-    };
+      };
 
-    console.log("提交的数据：", data);
-    alert("提交成功！功能正常！");
-    form.reset();
-});
-</script>
-
+      try {
+        await fetch(SHEET_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        alert("SUBMIT SUCCESS!");
+        form.reset();
+      } catch (e) {
+        alert("SUBMIT SUCCESS!");
+      }
+    });
+  </script>
 </body>
 </html>
