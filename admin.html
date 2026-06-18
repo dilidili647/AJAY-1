@@ -36,32 +36,37 @@
     </div>
 
 <script>
-let users = [];
-
 async function refreshData() {
-    try {
-        let res = await fetch("https://sheetdb.io/api/v1/2ez15k29x75fa");
-        users = await res.json();
-        document.getElementById("tableBody").innerHTML = users.map((u,i)=>`
-        <tr class="border-b border-gray-800">
-            <td class="py-3">${i+1}</td>
-            <td class="py-3">${u.name}</td>
-            <td class="py-3 font-bold text-[#36D399]">${u.phone}</td>
-            <td class="py-3">${u.email}</td>
-            <td class="py-3 text-gray-400 text-sm">${u.time}</td>
-        </tr>`).join('');
-    }catch(e){
-        alert('Load failed: '+e.message)
-    }
+  try {
+    let r = await fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f");
+    let d = await r.json();
+    let arr = Array.isArray(d) ? d : [d];
+    let html = "";
+    arr.forEach((u,i)=>{
+      html+=`
+      <tr class="border-b border-gray-800">
+        <td class="py-3">${i+1}</td>
+        <td class="py-3">${u.name}</td>
+        <td class="py-3 font-bold text-[#36D399]">${u.phone}</td>
+        <td class="py-3">${u.email}</td>
+        <td class="py-3 text-gray-400 text-sm">${u.time}</td>
+      </tr>`;
+    });
+    document.getElementById("tableBody").innerHTML = html;
+  }catch(e){}
 }
 
 function exportExcel() {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(users);
-    XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, "UserList.xlsx");
+  fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f")
+    .then(r=>r.json())
+    .then(d=>{
+      let a = Array.isArray(d) ? d : [d];
+      let wb = XLSX.utils.book_new();
+      let ws = XLSX.utils.json_to_sheet(a);
+      XLSX.utils.book_append_sheet(wb,ws,"Users");
+      XLSX.writeFile(wb,"UserList.xlsx");
+    })
 }
-
 refreshData();
 </script>
 </body>
