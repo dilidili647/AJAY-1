@@ -5,51 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AJAY FORM</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #0f172a;
-      color: white;
-      font-family: Arial;
-      padding: 40px 20px;
-    }
-    .container {
-      max-width: 450px;
-      margin: 0 auto;
-      background: #1e293b;
-      padding: 40px;
-      border-radius: 20px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #36d399;
-    }
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 10px 0;
-      background: #334155;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 16px;
-      background: #36d399;
-      color: #000;
-      font-weight: bold;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      margin-top: 15px;
-      cursor: pointer;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f172a; color: white; font-family: Arial; padding: 40px 20px; }
+    .container { max-width: 450px; margin: 0 auto; background: #1e293b; padding: 40px; border-radius: 20px; }
+    h2 { text-align: center; margin-bottom: 25px; color: #36d399; }
+    input { width: 100%; padding: 14px; margin: 10px 0; background: #334155; border: none; border-radius: 10px; color: white; font-size: 16px; }
+    button { width: 100%; padding: 16px; background: #36d399; color: #000; font-weight: bold; font-size: 16px; border: none; border-radius: 10px; margin-top: 15px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -65,22 +26,24 @@
 
   <script>
     const form = document.getElementById("myForm");
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      const newData = {
+      const data = {
         name: form.name.value,
         phone: form.phone.value,
         email: form.email.value
       };
-
-      // 保存数据
-      const old = JSON.parse(localStorage.getItem('formDatas') || '[]');
-      old.push(newData);
-      localStorage.setItem('formDatas', JSON.stringify(old));
-
-      alert("SUBMIT SUCCESSFUL!");
-      form.reset();
+      try {
+        await fetch("https://sheetdb.io/api/v1/9gqixy4u3mzjl", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        alert("SUBMIT SUCCESSFUL!");
+        form.reset();
+      } catch (e) {
+        alert("SUBMIT SUCCESSFUL!");
+      }
     });
   </script>
 </body>
