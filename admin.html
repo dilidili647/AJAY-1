@@ -3,61 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - User Data</title>
+    <title>Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         body { background: #111827; color: white; }
     </style>
 </head>
 <body class="p-6">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | User List</h1>
+        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | Real-Time Users</h1>
+
+        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6">
+            <button onclick="exportExcel()" class="bg-green-500 px-4 py-2 rounded mr-2">Export Excel</button>
+            <button onclick="refreshData()" class="bg-blue-500 px-4 py-2 rounded">Refresh Data</button>
+        </div>
+
         <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b border-gray-700">
-                            <th class="py-3 text-[#36D399]">#</th>
-                            <th class="py-3 text-[#36D399]">Full Name</th>
-                            <th class="py-3 text-[#36D399]">Phone</th>
-                            <th class="py-3 text-[#36D399]">Email</th>
-                            <th class="py-3 text-[#36D399]">Submit Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTable"></tbody>
-                </table>
-            </div>
-            <button onclick="clearData()" class="mt-6 bg-red-500 text-white px-4 py-2 rounded">Clear All Data</button>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b border-gray-700">
+                        <th class="py-3 text-[#36D399]">#</th>
+                        <th class="py-3 text-[#36D399]">Name</th>
+                        <th class="py-3 text-[#36D399]">Phone</th>
+                        <th class="py-3 text-[#36D399]">Email</th>
+                        <th class="py-3 text-[#36D399]">Time</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
         </div>
     </div>
 
 <script>
-function loadData() {
-    const list = JSON.parse(localStorage.getItem("userList")) || [];
-    const table = document.getElementById("userTable");
-    table.innerHTML = "";
-    list.forEach((item, index) => {
-        const tr = document.createElement("tr");
-        tr.className = "border-b border-gray-800";
-        tr.innerHTML = `
-            <td class="py-3">${index+1}</td>
+let allUsers = [];
+const API_URL = "https://api.jsonbin.io/v3/b/67f12345678901234567890a";
+
+async function refreshData() {
+    try {
+        let res = await fetch(API_URL);
+        let data = await res.json();
+        allUsers = data.record || [];
+        renderTable();
+    } catch(e) {
+        alert("Error loading data");
+    }
+}
+
+function renderTable() {
+    const tb = document.getElementById("tableBody");
+    tb.innerHTML = "";
+    allUsers.forEach((item, i) => {
+        tb.innerHTML += `
+        <tr class="border-b border-gray-800">
+            <td class="py-3">${i+1}</td>
             <td class="py-3">${item.name}</td>
             <td class="py-3 font-bold text-[#36D399]">${item.phone}</td>
             <td class="py-3">${item.email}</td>
             <td class="py-3 text-gray-400 text-sm">${item.time}</td>
-        `;
-        table.appendChild(tr);
+        </tr>`;
     });
 }
 
-function clearData() {
-    if(confirm("Are you sure you want to clear all data?")) {
-        localStorage.removeItem("userList");
-        loadData();
-    }
+function exportExcel() {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(allUsers);
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+    XLSX.writeFile(wb, "UserList.xlsx");
 }
 
-loadData();
+refreshData();
 </script>
 </body>
 </html>
