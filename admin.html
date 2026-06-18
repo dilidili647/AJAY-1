@@ -39,8 +39,9 @@
 let users = [];
 
 async function refreshData() {
-    let res = await fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f");
-    users = await res.json();
+    let res = await fetch("https://api.apispreadsheets.com/data/179200/");
+    let json = await res.json();
+    users = json.data || [];
     renderTable();
 }
 
