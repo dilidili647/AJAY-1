@@ -12,11 +12,11 @@
 </head>
 <body class="p-6">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel | User Data</h1>
+        <h1 class="text-3xl font-bold text-[#36D399] mb-6">👑 Admin Panel</h1>
 
-        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6 flex gap-3">
-            <button onclick="refreshData()" class="bg-blue-500 px-5 py-2 rounded">🔄 Refresh Data</button>
-            <button onclick="exportExcel()" class="bg-green-500 px-5 py-2 rounded">📊 Export Excel</button>
+        <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg mb-6 flex gap-4">
+            <button onclick="refreshData()" class="bg-blue-500 px-6 py-2 rounded">🔄 Refresh Data</button>
+            <button onclick="exportExcel()" class="bg-green-500 px-6 py-2 rounded">📊 Export Excel</button>
         </div>
 
         <div class="bg-[#1F2937] rounded-xl p-6 shadow-lg">
@@ -38,29 +38,27 @@
 <script>
 let users = [];
 
-// ✅ 【刷新按钮】核心功能
 async function refreshData() {
-    let res = await fetch("https://sheetdb.io/api/v1/59q8l2xj7w0a6");
+    let res = await fetch("https://api.npoint.io/8e80b48d21a8f4c3a27f");
     users = await res.json();
-    render();
+    renderTable();
 }
 
-function render() {
-    let html = "";
-    users.forEach((u, i) => {
+function renderTable() {
+    let html = '';
+    users.forEach((item, i) => {
         html += `
         <tr class="border-b border-gray-800">
             <td class="py-3">${i+1}</td>
-            <td class="py-3">${u.name}</td>
-            <td class="py-3 font-bold text-[#36D399]">${u.phone}</td>
-            <td class="py-3">${u.email}</td>
-            <td class="py-3 text-gray-400 text-sm">${u.time}</td>
+            <td class="py-3">${item.name}</td>
+            <td class="py-3 font-bold text-[#36D399]">${item.phone}</td>
+            <td class="py-3">${item.email}</td>
+            <td class="py-3 text-gray-400 text-sm">${item.time}</td>
         </tr>`;
     });
     document.getElementById("tableBody").innerHTML = html;
 }
 
-// ✅ 导出 Excel
 function exportExcel() {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(users);
