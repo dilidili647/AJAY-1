@@ -3,59 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>提交数据查看</title>
+  <title>DATA PANEL</title>
   <style>
-    body {
-      background: #0f172a;
-      color: white;
-      font-family: Arial;
-      padding: 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    h2 {
-      color: #36d399;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .item {
-      background: #1e293b;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 10px;
-    }
-    .item span {
-      color: #94a3b8;
-    }
+    body { background: #0f172a; color: white; padding: 30px; font-family: Arial; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h2 { color: #36d399; text-align: center; margin-bottom: 30px; }
+    .item { background: #1e293b; padding: 20px; margin: 10px 0; border-radius: 12px; }
+    .item div { margin: 5px 0; }
+    .item span { color: #94a3b8; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>用户提交数据记录</h2>
+    <h2>USER SUBMITTED DATA</h2>
     <div id="list"></div>
   </div>
 
   <script>
-    // 读取本地保存的所有提交数据
-    const list = document.getElementById('list');
-    const datas = JSON.parse(localStorage.getItem('formDatas') || '[]');
-
-    if (datas.length === 0) {
-      list.innerHTML = '<div style="text-align:center;">暂无数据</div>';
-    } else {
+    const list = document.getElementById("list");
+    async function loadData() {
+      const res = await fetch("https://sheetdb.io/api/v1/9gqixy4u3mzjl");
+      const datas = await res.json();
+      if (datas.length === 0) {
+        list.innerHTML = "<div style='text-align:center'>No Data</div>";
+        return;
+      }
       datas.forEach((item, i) => {
         list.innerHTML += `
           <div class="item">
-            <div>序号：${i+1}</div>
-            <div>姓名：${item.name}</div>
-            <div>电话：${item.phone}</div>
-            <div>邮箱：${item.email}</div>
+            <div>No: ${i+1}</div>
+            <div>Name: ${item.name}</div>
+            <div>Phone: ${item.phone}</div>
+            <div>Email: ${item.email}</div>
           </div>
         `;
       });
     }
+    loadData();
   </script>
 </body>
 </html>
