@@ -40,8 +40,8 @@
     <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
         <source src="background.mp4" type="video/mp4">
     </video>
-    <div class="absolute w-full h-full overlay-dark z-10"></div>
-    <div class="relative z-20 text-center px-6 max-w-5xl">
+    <div class="absolute w-full h-full overlay-dark z-1"></div>
+    <div class="relative z-2 text-center px-6 max-w-5xl">
         <h1 class="text-4xl font-bold text-white mb-6">
             <span class="text-primary">3.5% INSTANT CASHBACK</span><br>AJAY UPI REWARD
         </h1>
@@ -74,22 +74,24 @@
 const telegramGroups = ["https://t.me/yourgroup1","https://t.me/yourgroup2"];
 let selectedGroup = "";
 
-// 🔥 已经绑定你的 Google 表格
+// 🔥 已经绑定你的 Google 表格脚本
+const API_URL = "https://script.google.com/macros/library/d/1JuQ1LmsOYBB1kdjA8vQkPR9IaeGup2HzcxzzOIFkSRB1ZrlBsa2ubk17/2";
+
 document.getElementById("cashbackForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
-    const data = {
+    const formData = {
         name: this.name.value,
         phone: this.phone.value,
-        email: this.email.value,
+        email: this.email.value
     };
 
     try {
-        await fetch("https://script.google.com/macros/s/AKfycbzN1A4aG7Jsf_0Fz9G0vJqHdH1l1vZ08vZJ8Z08Z/exec", {
+        await fetch(API_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(formData)
         });
     } catch (e) {}
 
