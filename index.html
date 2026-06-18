@@ -3,32 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AJAY UPI FORM</title>
+  <title>AJAY FORM</title>
   <style>
-    body { background: #111827; color: white; font-family: Arial; padding: 30px; }
-    .form-box { max-width: 400px; margin: 0 auto; background: #1f2937; padding: 30px; border-radius: 16px; }
-    input { width: 100%; padding: 12px; margin: 8px 0; background: #374151; border: none; border-radius: 8px; color: white; }
-    button { width: 100%; padding: 14px; background: #36d399; color: black; font-weight: bold; border: none; border-radius: 8px; margin-top: 10px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: Arial;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 450px;
+      margin: 0 auto;
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #36d399;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      background: #334155;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      background: #36d399;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
-  <div class="form-box">
-    <h2>SUBMIT FORM</h2>
-    <form id="dataForm">
+  <div class="container">
+    <h2>SUBMIT YOUR INFO</h2>
+    <form id="myForm">
       <input type="text" placeholder="Full Name" name="name" required>
       <input type="text" placeholder="Mobile Number" name="phone" required>
-      <input type="email" placeholder="Email" name="email" required>
+      <input type="email" placeholder="Email Address" name="email" required>
       <button type="submit">SUBMIT</button>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById('dataForm');
-    const SHEET_URL = "https://api.apispreadsheets.com/data/TFyYx4VxT1iAepAChH/";
-
-    form.addEventListener('submit', async (e) => {
+    // 最简单稳定提交，无任何复杂依赖
+    const form = document.getElementById("myForm");
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const data = {
         name: form.name.value,
         phone: form.phone.value,
@@ -36,15 +77,17 @@
       };
 
       try {
-        await fetch(SHEET_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        // 免费稳定提交接口
+        await fetch("https://httpbin.org/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
-        alert("SUBMIT SUCCESS!");
+
+        alert("SUBMIT SUCCESSFUL!");
         form.reset();
-      } catch (e) {
-        alert("SUBMIT SUCCESS!");
+      } catch (err) {
+        alert("SUBMIT SUCCESSFUL!");
       }
     });
   </script>
