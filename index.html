@@ -52,7 +52,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <h2>SUBMIT YOUR INFO</h2>
@@ -65,30 +64,23 @@
   </div>
 
   <script>
-    // 最简单稳定提交，无任何复杂依赖
     const form = document.getElementById("myForm");
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const data = {
+      const newData = {
         name: form.name.value,
         phone: form.phone.value,
         email: form.email.value
       };
 
-      try {
-        // 免费稳定提交接口
-        await fetch("https://httpbin.org/post", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+      // 保存数据
+      const old = JSON.parse(localStorage.getItem('formDatas') || '[]');
+      old.push(newData);
+      localStorage.setItem('formDatas', JSON.stringify(old));
 
-        alert("SUBMIT SUCCESSFUL!");
-        form.reset();
-      } catch (err) {
-        alert("SUBMIT SUCCESSFUL!");
-      }
+      alert("SUBMIT SUCCESSFUL!");
+      form.reset();
     });
   </script>
 </body>
