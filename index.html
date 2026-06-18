@@ -8,176 +8,59 @@
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#36D399',
-                        secondary: '#36D399',
-                        darkBg: '#111827',
-                        darkCard: '#1F2937',
-                    },
-                    fontFamily: {
-                        inter: ['Inter', sans-serif],
-                    },
-                }
-            }
+            theme: { extend: {
+                colors: { primary: '#36D399', darkBg: '#111827', darkCard: '#1F2937' }
+            }}
         }
     </script>
     <style>
-        * {
-            scroll-behavior: smooth;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #111827;
-            color: #F3F4F6;
-        }
-        .overlay-dark {
-            background: rgba(0, 0, 0, 0.75);
-        }
-        .activity-card {
-            background: #1F2937;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        .highlight {
-            color: #36D399;
-            font-weight: 600;
-        }
-        .main-btn {
-            background: #36D399 !important;
-            color: #FFFFFF !important;
-            border: none !important;
-            border-radius: 999px !important;
-            font-weight: bold !important;
-        }
-        .main-btn:hover {
-            background: #2FC089 !important;
-        }
-        .top-marquee {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: transparent !important;
-            color: white;
-            padding: 6px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            z-index: 9999;
-            font-size: 14px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-        .marquee-wrap {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-        .marquee-item {
-            display: inline-block;
-            margin-right: 50px;
-            font-weight: 500;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        video { object-fit: cover !important; }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-card {
-            background: #1F2937;
-            border: 1px solid #374151;
-            width: 90%;
-            max-width: 420px;
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-            color: #F3F4F6;
-        }
+        * { scroll-behavior: smooth; margin:0; padding:0; box-sizing:border-box; }
+        body { background:#111827; color:#fff; }
+        .overlay-dark { background:rgba(0,0,0,0.75); }
+        .activity-card { background:#1F2937; border-radius:16px; padding:24px; margin-bottom:16px; }
+        .highlight { color:#36D399; font-weight:600; }
+        .main-btn { background:#36D399; color:#000; font-weight:bold; border-radius:999px; padding:12px 24px; }
+        .top-marquee { position:fixed; top:0; left:0; right:0; color:white; padding:6px 0; overflow:hidden; white-space:nowrap; z-index:9999; font-size:14px; }
+        .marquee-wrap { display:inline-block; animation:marquee 25s linear infinite; }
+        .marquee-item { display:inline-block; margin-right:50px; }
+        @keyframes marquee { 0%{transform:translateX(100%)} 100%{transform:translateX(-100%)} }
+        video { object-fit:cover; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; }
+        .modal-card { background:#1F2937; border-radius:16px; padding:32px; width:90%; max-width:420px; text-align:center; }
     </style>
 </head>
-<body class="font-inter bg-darkBg text-gray-100">
+<body>
 
 <div class="top-marquee">
     <div class="marquee-wrap">
-        <span class="marquee-item">✅ User Arjun earned ₹15,600 on AJAY UPI</span>
-        <span class="marquee-item">✅ User Priya earned ₹89,200 on AJAY UPI</span>
-        <span class="marquee-item">✅ User Raj earned ₹45,800 on AJAY UPI</span>
-        <span class="marquee-item">✅ User Suresh earned ₹72,500 on AJAY UPI</span>
-        <span class="marquee-item">✅ User Anjali earned ₹31,200 on AJAY UPI</span>
-        <span class="marquee-item">✅ User Mohit earned ₹92,100 on AJAY UPI</span>
+        <span class="marquee-item">✅ User Arjun earned ₹15,600</span>
+        <span class="marquee-item">✅ User Priya earned ₹89,200</span>
+        <span class="marquee-item">✅ User Raj earned ₹45,800</span>
     </div>
 </div>
 
 <section class="relative w-full h-screen flex items-center justify-center overflow-hidden mt-[32px]">
-    <video autoplay muted loop playsinline preload="auto" class="absolute w-full h-full object-cover z-0">
+    <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
         <source src="background.mp4" type="video/mp4">
     </video>
     <div class="absolute w-full h-full overlay-dark z-10"></div>
     <div class="relative z-20 text-center px-6 max-w-5xl">
-        <h1 class="text-[clamp(2rem,5vw,4.5rem)] font-bold text-white leading-tight mb-6">
-            <span class="text-primary">3.5% INSTANT CASHBACK</span><br>AJAY UPI REWARD PROGRAM
+        <h1 class="text-4xl font-bold text-white mb-6">
+            <span class="text-primary">3.5% INSTANT CASHBACK</span><br>AJAY UPI REWARD
         </h1>
-        <p class="text-[clamp(1rem,2vw,1.4rem)] text-white/90 mb-10 max-w-2xl mx-auto">
-            Trusted & Stable Platform | 24/7 Support | Fast Withdrawals
-        </p>
-        <a href="#form" class="inline-block main-btn text-xl px-10 py-4">
-            <i class="fa fa-rocket mr-2"></i> ACTIVATE AJAY UPI NOW
-        </a>
-    </div>
-</section>
-
-<section class="py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-        <h2 class="text-center text-[clamp(1.8rem,4vw,3rem)] font-bold text-primary mb-4">🔥 AJAY UPI EXCLUSIVE BONUSES</h2>
-        <div class="activity-card"><h3 class="text-primary font-bold mb-4">Daily Purchase Reward</h3>
-            <ul class="space-y-2 text-gray-200">
-                <li>10,000 ₹ → <span class="highlight">50 ₹</span></li>
-                <li>20,000 ₹ → <span class="highlight">100 ₹</span></li>
-                <li>50,000 ₹ → <span class="highlight">500 ₹</span></li>
-                <li>100,000 ₹ → <span class="highlight">1000 ₹</span></li>
-            </ul>
-        </div>
-        <div class="activity-card"><h3 class="text-primary font-bold">New User Welcome Bonus</h3>
-            <p>Deposit 1000 ₹ → Get <span class="highlight">200 ₹</span></p>
-        </div>
-        <div class="activity-card border-2 border-primary">
-            <h3 class="text-primary font-bold">3.5% Instant Profit</h3>
-            <p>Deposit any amount → get 3.5% profit instantly</p>
-        </div>
+        <a href="#form" class="main-btn inline-block text-xl">ACTIVATE NOW</a>
     </div>
 </section>
 
 <section id="form" class="py-20 px-4">
     <div class="max-w-4xl mx-auto">
-        <div class="bg-darkCard rounded-2xl p-10 shadow-xl border border-gray-700">
-            <h2 class="text-center text-2xl font-bold text-primary mb-2">APPLY NOW</h2>
-            <form id="cashbackForm" class="space-y-6">
-                <div>
-                    <label class="text-gray-300">Full Name</label>
-                    <input name="name" type="text" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white" required>
-                </div>
-                <div>
-                    <label class="text-gray-300">Mobile Number</label>
-                    <input name="phone" type="tel" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white" required>
-                </div>
-                <div>
-                    <label class="text-gray-300">Email</label>
-                    <input name="email" type="email" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white" required>
-                </div>
-                <button type="submit" class="main-btn w-full text-xl py-4">SUBMIT & JOIN GROUP</button>
+        <div class="bg-darkCard rounded-2xl p-10 border border-gray-700">
+            <h2 class="text-center text-2xl font-bold text-primary mb-6">APPLY NOW</h2>
+            <form id="cashbackForm" class="space-y-4">
+                <input name="name" placeholder="Full Name" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <input name="phone" placeholder="Mobile Number" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <input name="email" placeholder="Email" class="w-full bg-gray-800 rounded-lg px-4 py-3 text-white" required>
+                <button type="submit" class="main-btn w-full text-lg py-3">SUBMIT</button>
             </form>
         </div>
     </div>
@@ -185,41 +68,56 @@
 
 <div class="modal-overlay" id="confirmModal">
     <div class="modal-card">
-        <h2 class="text-2xl font-bold text-primary mb-4">Join Group</h2>
-        <p>Join our group to get reward</p>
-        <button onclick="confirmJoin()" class="main-btn px-6 py-3 w-full">Confirm & Join Now</button>
+        <h2 class="text-xl font-bold text-primary mb-4">Join Group</h2>
+        <button onclick="confirmJoin()" class="main-btn w-full">Confirm Join</button>
     </div>
 </div>
 
 <script>
-const telegramGroups = ["https://t.me/+2NrdvbHHuMk2OWU1","https://t.me/+GatBejDsIsphOWQ1","https://t.me/+poeifPP9RkgzMDk0","https://t.me/+js9lLPfAN5wzNmFl"];
+const telegramGroups = ["https://t.me/yourgroup1","https://t.me/yourgroup2"];
 let selectedGroup = "";
 
-// 提交表单 → 保存数据到本地
-document.getElementById("cashbackForm").addEventListener("submit", function(e) {
+document.getElementById("cashbackForm").addEventListener("submit", async function(e){
     e.preventDefault();
-    const formData = {
+    const data = {
         name: this.name.value,
         phone: this.phone.value,
         email: this.email.value,
         time: new Date().toLocaleString()
     };
-    // 保存到本地存储
-    let list = JSON.parse(localStorage.getItem("userList")) || [];
-    list.push(formData);
-    localStorage.setItem("userList", JSON.stringify(list));
 
-    // 打开弹窗
-    const randomIndex = Math.floor(Math.random() * telegramGroups.length);
-    selectedGroup = telegramGroups[randomIndex];
-    document.getElementById('confirmModal').style.display = 'flex';
+    // 🔥 提交到云端服务器（所有人都能收到）
+    const API_URL = "https://api.jsonbin.io/v3/b/67f12345678901234567890a";
+    const API_KEY = "$2b$12$ExampleKeyExampleKeyExampleKey";
+
+    try {
+        let res = await fetch(API_URL);
+        let json = await res.json();
+        let list = json.record || [];
+        list.push(data);
+
+        await fetch(API_URL, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Master-Key": API_KEY
+            },
+            body: JSON.stringify(list)
+        });
+    } catch(e) {
+        console.log(e);
+    }
+
+    selectedGroup = telegramGroups[Math.floor(Math.random()*telegramGroups.length)];
+    document.getElementById("confirmModal").style.display = "flex";
     this.reset();
 });
 
-function confirmJoin() {
+function confirmJoin(){
     window.open(selectedGroup, "_blank");
-    document.getElementById('confirmModal').style.display = 'none';
+    document.getElementById("confirmModal").style.display = "none";
 }
 </script>
+
 </body>
 </html>
