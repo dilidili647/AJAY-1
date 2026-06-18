@@ -87,7 +87,7 @@ document.getElementById("cashbackForm").addEventListener("submit", async functio
     };
 
     try {
-        await fetch("https://api.apispreadsheets.com/data/179200/", {
+        await fetch("https://sheetdb.io/api/v1/2ez15k29x75fa", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
